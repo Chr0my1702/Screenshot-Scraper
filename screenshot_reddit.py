@@ -10,7 +10,7 @@ import scrape_reddit
 from PIL import Image
 import json
 
-def screenshot_website(subreddit, limit, over18):
+def screenshot_website(subreddit, limit):
     def take_screenshot_of_element(filename, ID):
         screenshot_as_bytes = driver.find_element(By.XPATH, "/html/body/div[1]/div/div[2]/div[2]/div/div[3]/div[1]/div[2]/div[1]").screenshot_as_png
         with open(str(filename+'.png'), 'wb') as f:
@@ -33,13 +33,12 @@ def screenshot_website(subreddit, limit, over18):
             driver.find_element(By.XPATH, '/html/body/div[1]/div/div[2]/div[3]/div/section/div/section/section/form[2]/button').click()
         except: pass
 
-        if over18: # for the reddit filter on the page
-            try:
-                driver.find_element(By.XPATH, '/html/body/div[1]/div/div[2]/div[2]/div/div/div[1]/div/div/div[2]/button').click()
-                try: # accept the filter for the image
-                    driver.find_element(By.XPATH, '/html/body/div[1]/div/div[2]/div[2]/div/div[3]/div[1]/div[2]/div[1]/div/div[5]/div/a/div/button').click()
-                except: pass
+        try:
+            driver.find_element(By.XPATH, '/html/body/div[1]/div/div[2]/div[2]/div/div/div[1]/div/div/div[2]/button').click()
+            try: # accept the filter for the image
+                driver.find_element(By.XPATH, '/html/body/div[1]/div/div[2]/div[2]/div/div[3]/div[1]/div[2]/div[1]/div/div[5]/div/a/div/button').click()
             except: pass
+        except: pass
 
         #create folder for subreddit
         try:
@@ -52,5 +51,5 @@ def screenshot_website(subreddit, limit, over18):
 
     driver.close()
     
-    return
+    return subreddit
 
