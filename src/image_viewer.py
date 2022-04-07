@@ -4,50 +4,7 @@ from tkinter import *
 from PIL import ImageTk, Image
 from numpy import delete
 from tkinter import filedialog
-import resize 
-import screenshot_reddit
-
-def start_page():
-    def open_file_explorer(event=None):
-        folder = filedialog.askdirectory()
-        window.destroy()
-        image_viewer(('resized_'+folder),folder)  
-
-    def enter_new_video():
-        print(subreddit.get(),int(posts.get()))
-        dir = screenshot_reddit.screenshot_website(subreddit.get(),int(posts.get()))
-        resize.resize_keeping_aspect_ratio(dir,int(500),int(500),int(500))
-        window.destroy()
-        image_viewer(('resized_'+dir), dir)
-           
-    
-    window = Tk()
-    window.title("Chr0my's Image Viewer")
-    window.geometry('500x200')
-    lbl = Label(window, text="Welcome, make a good video!")
-    lbl.grid(column=1, row=0)
-
-    
-    subreddittext = Label(window, text="Make a new video, Enter a subreddit:")
-    subreddittext.grid(column=1, row=1)
-    subreddit = Entry(window,width=10)
-    subreddit.grid(column=2, row=1)
-
-    poststext = Label(window, text="Make a new video, Enter how many posts you want, rec=75 max=499:")
-    poststext.grid(column=1, row=2)
-    posts = Entry(window,width=10)
-    posts.grid(column=3, row=2)
-
-
-    newbtn = Button(window, text="Get those posts!", command=enter_new_video)
-    newbtn.grid(column=1, row=5)
-
-
-    btn = Button(window, text="Restore from existing folder", command=open_file_explorer)
-    btn.grid(column=1, row=8)
-
-    window.mainloop()
-
+import sys
 
 def image_viewer(resized_dir, real_dir):
     root = Tk()
@@ -71,9 +28,6 @@ def image_viewer(resized_dir, real_dir):
     my_label = Label(image= image_list[0],)
     my_label.grid(row=0, column=0, columnspan=3)
     #set button on the root screen
-
-
-    
 
     def forward(image_number):
         global my_label
@@ -120,8 +74,6 @@ def image_viewer(resized_dir, real_dir):
         global image_num
         image_num = image_number
 
-    def exit1():
-        exit()
 
     def delete():
         global my_label
@@ -151,13 +103,11 @@ def image_viewer(resized_dir, real_dir):
         button_forward.invoke()
     
     button_back = Button(root, text=" << ",  command=back, state=DISABLED).grid(row=1, column=0)
-    button_exit = Button(root, text=" EXIT ", command= exit1).grid(row=1, column=4, pady=10)
-    button_exit = Button(root, text=" delete image", command= delete).grid(row=1, column=1, pady=10)
+    #button_exit = Button(root, text=" EXIT ", command= exit1).grid(row=1, column=4, pady=10)
+    button_delete = Button(root, text=" delete image", command= delete).grid(row=1, column=1, pady=10)
     button_forward = Button(root, text=" >> ", command=lambda: forward(2)).grid(row=1, column=2)
 
     status=Label(root, text='Image '+ str(1) +' of '+str(len(image_list)), bd=1, relief=SUNKEN, anchor=E)
     status.grid(row=2, column=0, columnspan=3, sticky=W+E)
     root.mainloop()
 
-
-start_page()

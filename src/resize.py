@@ -40,6 +40,8 @@ def resize_keeping_aspect_ratio(normal_size_image_foldername, height, limit_widt
             im_resized = resize_via_hieght(im,height, limit_width, limit_height) 
             filepath = f"resized_{normal_size_image_foldername}/{file}" 
             im_resized.save(filepath)
+        else:
+            print(f"{file} is not an image (."+ext+")")
 
     return f"resized_{normal_size_image_foldername}"
 
