@@ -28,7 +28,7 @@ def screenshot_website(subreddit, limit):
     options.add_argument("force-device-scale-factor=1")
     options.add_argument("enable-javascript")
     driver = webdriver.Chrome(options=options)
-    #driver.set_window_position(-10000,0)
+    driver.set_window_position(-10000,0)
     posts = scrape_reddit.get_posts(subreddit=subreddit, limit=limit)
     
     driver.get("chrome://settings/")
