@@ -1,0 +1,2 @@
+**/__pycache__
+# This prevents pythons cache to be commited to the repo

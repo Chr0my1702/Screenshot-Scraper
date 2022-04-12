@@ -3,10 +3,10 @@ import tkinter.font as tkFont
 from src.image_viewer  import image_viewer
 import src.resize as resize
 import src.screenshot_reddit_posts  as screenshot_reddit_posts
-import os,sys
+import os
 from tkinter import filedialog
 
-def startup_window():
+def startup_window() -> None:
     root = tk.Tk()
     #setting title
     root.title("Chr0my's Screenshot Tool")
@@ -25,7 +25,7 @@ def startup_window():
         try:
             os.listdir(head_tail[0] + 'resized_' + head_tail[1])            
             image_viewer((head_tail[0] + 'resized_' + head_tail[1]),folder)
-        except:
+        except Exception:
             resize.resize_keeping_aspect_ratio(head_tail[1],int(500),int(500),int(500))
             image_viewer(('resized_'+head_tail[1]),folder)
 

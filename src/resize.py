@@ -1,7 +1,7 @@
 import os 
 from PIL import Image
 
-def resize_via_width(im,new_width):
+def resize_via_width(im: Image, new_width: int) -> Image:
     width,height = im.size 
     ratio = height/width 
     new_height = int(ratio*new_width) 
@@ -9,7 +9,7 @@ def resize_via_width(im,new_width):
     return resized_image 
 #instead of basing the new aspect ratio on the width, which is the code above, we base it on the height
 #basically, we are making the image taller, and then we are making it wider
-def resize_via_hieght(im,new_height, limit_width,limit_height):
+def resize_via_hieght(im: Image, new_height: int, limit_width: int, limit_height: int) -> Image:
     width,height = im.size 
     ratio = width/height 
     new_width = int(ratio*new_height) 
@@ -24,7 +24,7 @@ def resize_via_hieght(im,new_height, limit_width,limit_height):
     return resized_image
 
 
-def resize_keeping_aspect_ratio(normal_size_image_foldername, height, limit_width, limit_height):
+def resize_keeping_aspect_ratio(normal_size_image_foldername: str, height: int, limit_width: int, limit_height: int) -> str:
     files = os.listdir(normal_size_image_foldername)
     extensions = ['jpg','jpeg','png','gif'] 
     try:
