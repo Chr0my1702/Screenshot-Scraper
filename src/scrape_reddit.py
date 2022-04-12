@@ -1,19 +1,20 @@
 import re
 import json
-import pandas as pd
 import requests
+
 print("omg this works")
-def get_posts(subreddit, limit):
+
+def get_posts(subreddit: str, limit: int) -> list:
     '''limit is the number of posts to be scraped, max to be 499'''
-    def get_reddit(subreddit, limit):
+    def get_reddit(subreddit: str, limit: int)_ dict:
         try:
             base_url = f'https://api.pushshift.io/reddit/search/submission/?subreddit={subreddit}&size={limit}'
             request = requests.get(base_url, headers={'User-agent': 'yourbot'})
-        except:
+        except Exception:
             print('An Error Occured')
         return request.json()
 
-    def get_post_urls_and_titles(json_posts):
+    def get_post_urls_and_titles(json_posts: dict) -> list:
         posts = []
         for post in range(0, len(json_posts['data'])):
             x = json_posts['data'][post]['full_link']

@@ -1,19 +1,14 @@
-from io import BytesIO
 import os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import Select
-from selenium.webdriver.common.keys import Keys
 
 
 import chromedriver_autoinstaller
-import sys
 import src.scrape_reddit as scrape_reddit
-from PIL import Image
 import json
 from time import sleep
 
-def screenshot_website(subreddit, limit):
+def screenshot_website(subreddit: str, limit:int) -> str:
     def take_screenshot_of_element(filename):
         screenshot_as_bytes = driver.find_element(By.XPATH, "/html/body/div[1]/div/div[2]/div[2]/div/div[3]/div[1]/div[2]/div[1]").screenshot_as_png
         with open(str(filename+'.png'), 'wb') as f:
@@ -40,19 +35,20 @@ def screenshot_website(subreddit, limit):
         sleep(0.5)
         try: # for the accept button on the bottom of the page
             driver.find_element(By.XPATH, '/html/body/div[1]/div/div[2]/div[3]/div/section/div/section/section/form[2]/button').click()
-        except: pass
+        except Exception: pass
 
         try:
             driver.find_element(By.XPATH, '/html/body/div[1]/div/div[2]/div[2]/div/div/div[1]/div/div/div[2]/button').click()
-            try: # accept the filter for the image
+        except Exception: pass
+
+        try: # accept the filter for the image
                 driver.find_element(By.XPATH, '/html/body/div[1]/div/div[2]/div[2]/div/div[3]/div[1]/div[2]/div[1]/div/div[5]/div/a/div/button').click()
-            except: pass
-        except: pass
+        except Exception: pass
 
         #create folder for subreddit
         try:
             os.mkdir(subreddit)
-        except: pass
+        except Exception: pass
         print(int(posts.index(post))+1, "of", len(posts))
         take_screenshot_of_element(filename=(subreddit+"/"+str(post[1])))
 

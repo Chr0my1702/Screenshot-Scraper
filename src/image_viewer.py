@@ -1,10 +1,6 @@
-from logging import root
 import os
 from tkinter import *
 from PIL import ImageTk, Image
-from numpy import delete
-from tkinter import filedialog
-import sys
 
 def image_viewer(resized_dir, real_dir):
     root = Tk()
