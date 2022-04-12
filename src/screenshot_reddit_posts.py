@@ -5,13 +5,16 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
 
-
+import winshell
 import chromedriver_autoinstaller
 import sys
 import src.scrape_reddit as scrape_reddit
 from PIL import Image
 import json
 from time import sleep
+from pathlib import Path
+
+
 
 def screenshot_website(subreddit, limit):
     def take_screenshot_of_element(filename):
@@ -33,7 +36,11 @@ def screenshot_website(subreddit, limit):
     
     driver.get("chrome://settings/")
     sleep(0.5)
-    #driver.execute_script('chrome.settingsPrivate.setDefaultZoom(0.5);')
+    #find folder called "RedditScreenShotsFromProgram"
+    #what is the 
+    path = Path(os.getcwd())
+    mkdirSubreddit = str(str((path.parent.absolute()).parent.absolute())+'\\RedditScreenShotsFromProgram\\'+ subreddit)
+
     for post in posts:
         driver.get(post[0])
         #driver.execute_script("document.body.style.zoom = '50%'")
@@ -51,13 +58,13 @@ def screenshot_website(subreddit, limit):
 
         #create folder for subreddit
         try:
-            os.mkdir(subreddit)
+            os.mkdir(mkdirSubreddit)
         except: pass
         print(int(posts.index(post))+1, "of", len(posts))
-        take_screenshot_of_element(filename=(subreddit+"/"+str(post[1])))
+        take_screenshot_of_element(filename=(mkdirSubreddit+"\\"+post[1]))
 
 
     driver.close()
     
-    return subreddit
+    return mkdirSubreddit
 

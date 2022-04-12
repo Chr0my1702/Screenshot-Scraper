@@ -1,5 +1,7 @@
-import os 
+import os, pathlib
 from PIL import Image
+from pathlib import Path
+
 
 def resize_via_width(im,new_width):
     width,height = im.size 
@@ -25,23 +27,25 @@ def resize_via_hieght(im,new_height, limit_width,limit_height):
 
 
 def resize_keeping_aspect_ratio(normal_size_image_foldername, height, limit_width, limit_height):
+    #
+    resizedfilepath = str(os.path.split(normal_size_image_foldername)[0] + '\\resized_' + os.path.split(normal_size_image_foldername)[1])
     files = os.listdir(normal_size_image_foldername)
     extensions = ['jpg','jpeg','png','gif'] 
     try:
-        os.mkdir(f"resized_{normal_size_image_foldername}")
+        os.mkdir(f"{resizedfilepath}")
     except:
         #clear the folder
-        for file in os.listdir(f"resized_{normal_size_image_foldername}"):
-            os.remove(f"resized_{normal_size_image_foldername}/" + file)
+        for file in os.listdir(f"{resizedfilepath}"):
+            os.remove(f"{resizedfilepath}/" + file)
     for file in files: 
         ext = file.split(".")[-1]
         if ext in extensions: 
             im = Image.open(normal_size_image_foldername + "/" + file) 
             im_resized = resize_via_hieght(im,height, limit_width, limit_height) 
-            filepath = f"resized_{normal_size_image_foldername}/{file}" 
+            filepath = f"{resizedfilepath}/{file}" 
             im_resized.save(filepath)
         else:
             print(f"{file} is not an image (."+ext+")")
 
-    return f"resized_{normal_size_image_foldername}"
+    return f"{resizedfilepath}"
 

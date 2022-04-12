@@ -2,7 +2,7 @@ import re
 import json
 import pandas as pd
 import requests
-print("omg this works")
+
 def get_posts(subreddit, limit):
     '''limit is the number of posts to be scraped, max to be 499'''
     def get_reddit(subreddit, limit):

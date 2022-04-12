@@ -16,7 +16,7 @@ def startup_window():
         dir = screenshot_reddit_posts.screenshot_website(subreddit_entry.get(),int(num_posts_entry.get()))
         resize.resize_keeping_aspect_ratio(dir,int(500),int(500),int(500))
         root.destroy()
-        image_viewer(('resized_'+dir), dir)
+        image_viewer((str(os.path.split(dir)[0] + '\\resized_' + os.path.split(dir)[1])), dir)
 
     def load_folder_button_command():
         folder = filedialog.askdirectory()
@@ -116,7 +116,7 @@ def startup_window():
     load_folder_button["font"] = ft
     load_folder_button["fg"] = "#000000"
     load_folder_button["justify"] = "center"
-    load_folder_button["text"] = "Load from a folder"
+    load_folder_button["text"] = "(not working)Load"
     load_folder_button.place(x=5,y=300,width=490,height=30)
     load_folder_button["command"] = load_folder_button_command
 
