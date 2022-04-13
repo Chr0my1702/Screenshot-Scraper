@@ -1,5 +1,5 @@
-# Reddit-Screenshot-Scraper-and-Discriminator
-
+# Screenshot-Scraper-and-Discriminator
+##It scrapes and screenshots reddit and twitter!
 ## About:
 
 Originially created to serve [Matt Rose](https://www.youtube.com/c/MattRoseStuff) :D Hopefully it works
