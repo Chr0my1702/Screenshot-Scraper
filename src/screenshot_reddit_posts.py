@@ -1,70 +1,70 @@
-from io import BytesIO
-import os
+import os,re, requests
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import Select
-from selenium.webdriver.common.keys import Keys
 
-import winshell
 import chromedriver_autoinstaller
-import sys
-import src.scrape_reddit as scrape_reddit
-from PIL import Image
-import json
 from time import sleep
 from pathlib import Path
 
+def get_posts(subreddit, limit):
+    '''limit is the number of posts to be scraped, max to be 499'''
+    def get_reddit(subreddit, limit):
+        try:
+            base_url = f'https://api.pushshift.io/reddit/search/submission/?subreddit={subreddit}&size={limit}'
+            request = requests.get(base_url, headers={'User-agent': 'yourbot'})
+        except:
+            print('An Error Occured')
+        return request.json()
 
+    def get_post_urls_and_titles(json_posts):
+        posts = []
+        for post in range(0, len(json_posts['data'])):
+            x = json_posts['data'][post]['full_link']
+            y = json_posts['data'][post]['title']
+            # remove any special characters from the title
+            y = re.sub('\W+', '', y)
+            posts.append([x, y, subreddit])
+        return posts
 
-def screenshot_website(subreddit, limit):
+    r = get_post_urls_and_titles(get_reddit(subreddit, limit))
+
+    return r
+
+def screenshot_website(subreddit, limit, directory):
     def take_screenshot_of_element(filename):
         screenshot_as_bytes = driver.find_element(By.XPATH, "/html/body/div[1]/div/div[2]/div[2]/div/div[3]/div[1]/div[2]/div[1]").screenshot_as_png
         with open(str(filename+'.png'), 'wb') as f:
             f.write(screenshot_as_bytes)
+            f.close()
     chromedriver_autoinstaller.install()
     options = webdriver.ChromeOptions()
     options.add_argument("--log-level=3")
-    #options.add_argument('headless')
     options.add_argument('no-sandbox')
     options.add_argument("window-size=2000x2000")
-    #options.add_argument("disable-gpu")
     options.add_argument("force-device-scale-factor=1")
     options.add_argument("enable-javascript")
     driver = webdriver.Chrome(options=options)
     driver.set_window_position(-10000,0)
-    posts = scrape_reddit.get_posts(subreddit=subreddit, limit=limit)
-    
-    driver.get("chrome://settings/")
+    posts = get_posts(subreddit=subreddit, limit=limit)
     sleep(0.5)
-    #find folder called "RedditScreenShotsFromProgram"
-    #what is the 
-    path = Path(os.getcwd())
-    mkdirSubreddit = str(str((path.parent.absolute()).parent.absolute())+'\\RedditScreenShotsFromProgram\\'+ subreddit)
-
     for post in posts:
         driver.get(post[0])
-        #driver.execute_script("document.body.style.zoom = '50%'")
         sleep(0.5)
         try: # for the accept button on the bottom of the page
             driver.find_element(By.XPATH, '/html/body/div[1]/div/div[2]/div[3]/div/section/div/section/section/form[2]/button').click()
-        except: pass
+        except Exception: pass
 
         try:
             driver.find_element(By.XPATH, '/html/body/div[1]/div/div[2]/div[2]/div/div/div[1]/div/div/div[2]/button').click()
             try: # accept the filter for the image
                 driver.find_element(By.XPATH, '/html/body/div[1]/div/div[2]/div[2]/div/div[3]/div[1]/div[2]/div[1]/div/div[5]/div/a/div/button').click()
-            except: pass
-        except: pass
+            except Exception: pass
+        except Exception: pass
 
-        #create folder for subreddit
-        try:
-            os.mkdir(mkdirSubreddit)
-        except: pass
         print(int(posts.index(post))+1, "of", len(posts))
-        take_screenshot_of_element(filename=(mkdirSubreddit+"\\"+post[1]))
+        take_screenshot_of_element(filename=(directory+'/'+post[1]))
 
 
     driver.close()
     
-    return mkdirSubreddit
-
+    return str(directory)
